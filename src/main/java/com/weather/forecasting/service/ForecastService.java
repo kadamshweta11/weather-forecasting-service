@@ -16,19 +16,20 @@ public class ForecastService {
         this.geocodingService = geocodingService;
     }
 
-    /**
-     * Use coordinates directly (Part 1 compatible)
-     */
+   
     public ForecastResponse getForecastByCoordinates(double lat, double lon) {
         Coordinate coordinate = new Coordinate(lat, lon);
         return weatherService.getWeather(coordinate);
     }
 
-    /**
-     * Use full address to first geocode, then fetch weather
-     */
+
     public ForecastResponse getForecastByAddress(AddressRequest address) {
         Coordinate coordinate = geocodingService.getCoordinate(address);
         return weatherService.getWeather(coordinate);
+    }
+
+    public ForecastResponse getForecast(double lat, double lon) {
+        
+        throw new UnsupportedOperationException("Unimplemented method 'getForecast'");
     }
 }
