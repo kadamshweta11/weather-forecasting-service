@@ -1,21 +1,34 @@
 package com.weather.forecasting.service;
+
+import com.weather.forecasting.model.AddressRequest;
+import com.weather.forecasting.model.Coordinate;
 import com.weather.forecasting.model.ForecastResponse;
 import org.springframework.stereotype.Service;
 
-import java.time.Instant;
-import java.util.Random;
-
 @Service
- public class ForecastService{
-    private final Random random=new Random();
-    public ForecastResponse getForecast(double lat,double lon){
-        long time=Instant.now().getEpochSecond();
-        double  temp=10+(20-10)*random.nextDouble();
-        double feelsLike=temp-1.5;
-        int humidity=40+ random.nextInt(60);
-        return new ForecastResponse(time,round(temp),round(feelsLike),humidity);
+public class ForecastService {
+
+    private final WeatherService weatherService;
+    private final GeocodingService geocodingService;
+
+    public ForecastService(WeatherService weatherService, GeocodingService geocodingService) {
+        this.weatherService = weatherService;
+        this.geocodingService = geocodingService;
     }
-    private double round(double value){
-        return Math.round(value*100.0)/100.0;
+
+    /**
+     * Use coordinates directly (Part 1 compatible)
+     */
+    public ForecastResponse getForecastByCoordinates(double lat, double lon) {
+        Coordinate coordinate = new Coordinate(lat, lon);
+        return weatherService.getWeather(coordinate);
     }
- }
+
+    /**
+     * Use full address to first geocode, then fetch weather
+     */
+    public ForecastResponse getForecastByAddress(AddressRequest address) {
+        Coordinate coordinate = geocodingService.getCoordinate(address);
+        return weatherService.getWeather(coordinate);
+    }
+}
