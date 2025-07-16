@@ -8,7 +8,7 @@
   <groupId>com.weather</groupId>
   <artifactId>forecasting</artifactId>
   <version>0.0.1-SNAPSHOT</version>
-  <name>forecasting</name>
+  <name>forecasting-part3</name>
   <description>Weather Forecasting Service with Spring Boot</description>
 
   <parent>
@@ -79,6 +79,7 @@
   </dependencies>
 
   <build>
+  <finalName>forecasting-part3</finalName>
     <plugins>
    
       <plugin>
