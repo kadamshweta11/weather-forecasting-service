@@ -9,9 +9,12 @@ import org.springframework.web.util.UriComponentsBuilder;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @Service
 public class GeocodingService {
+    private static final Logger log = LoggerFactory.getLogger(GeocodingService.class);
     @Value("${opencage.api.key}")
     private String apiKey;
     private final RestTemplate restTemplate=new RestTemplate();
@@ -28,6 +31,7 @@ public class GeocodingService {
         .queryParam("key",apiKey)
         .build()
         .toUriString();
+        log.info("Calling OpenCage API with URL: {}", url);
 
         // call the API
         String response=restTemplate.getForObject(url,String.class);
@@ -37,6 +41,7 @@ public class GeocodingService {
         JSONArray results = json.getJSONArray("results");
 
 if (results.isEmpty()) {
+    log.error("No results found for address: {}", address);
     throw new IllegalArgumentException("Address not found: Geocoding returned no results.");
 }
 
@@ -44,7 +49,7 @@ JSONObject location = results.getJSONObject(0).getJSONObject("geometry");
 
         double lat=location.getDouble("lat");
         double lon=location.getDouble("lng");
-
+        log.info("Geocoding result - Latitude: {}, Longitude: {}", lat, lon);
         return new Coordinate(lat,lon);
         
     }

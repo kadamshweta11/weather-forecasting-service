@@ -31,7 +31,8 @@ public class SecurityConfig {
         http
             .csrf(csrf -> csrf.disable())
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/forecast/**").authenticated()
+                .requestMatchers("/actuator/health", "/actuator/info").permitAll()
+                .requestMatchers("/forecast","/forecast/**").authenticated()
                 .anyRequest().denyAll()
             )
             .httpBasic(withDefaults()); 
