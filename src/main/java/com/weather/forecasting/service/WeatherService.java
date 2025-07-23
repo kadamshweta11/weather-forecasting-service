@@ -47,7 +47,7 @@ public class WeatherService {
         double feelsLike = main.getDouble("feels_like");
         int humidity = main.getInt("humidity");
 
-        long time = firstForecast.getLong("dt"); // UTC timestamp
+        // long time = firstForecast.getLong("dt"); // UTC timestamp
         log.info("Weather fetched: time={}, temp={}, feels_like={}, humidity={}",
                 timestamp, temp, feelsLike, humidity);
         return new ForecastResponse(timestamp, temp, feelsLike, humidity);
